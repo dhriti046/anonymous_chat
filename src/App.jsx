@@ -1,15 +1,30 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
+
+import Home from "./pages/home";
 import CreateProfile from "./pages/create_profile";
 import DiscoverUsers from "./pages/Discover_user";
+import Profile from "./pages/profile";
+import Chat from "./pages/chat";
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<CreateProfile />} />
-        <Route path="/discover" element={<DiscoverUsers />} />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Home />} />
+
+      <Route
+        path="/create-profile"
+        element={<CreateProfile />}
+      />
+
+      <Route
+        path="/discover"
+        element={<DiscoverUsers />}
+      />
+
+      <Route path="/profile/:id" element={<Profile />} />
+
+      <Route path="/chat/:username" element={<Chat />} />
+    </Routes>
   );
 }
 

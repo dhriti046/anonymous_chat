@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 function CreateProfile() {
   const [username, setUsername] = useState("");
+  const [bio, setBio] = useState("");
   const [interests, setInterests] = useState("");
 
   const navigate = useNavigate();
@@ -13,19 +14,21 @@ function CreateProfile() {
       .map((interest) => interest.trim())
       .filter((interest) => interest !== "");
 
-    if (!username.trim() || interestArray.length === 0) {
+    if (!username.trim() || !bio.trim() || interestArray.length === 0) {
       alert("Please fill all fields");
       return;
     }
 
     const profile = {
+      id: Date.now(),
       username: username.trim(),
+      bio: bio.trim(),
       interests: interestArray,
     };
 
     localStorage.setItem("profile", JSON.stringify(profile));
 
-    navigate("/discover");
+    navigate(`/profile/${profile.id}`);
   }
 
   return (
@@ -44,6 +47,16 @@ function CreateProfile() {
 
       <input
         type="text"
+        placeholder="Bio"
+        value={bio}
+        onChange={(e) => setBio(e.target.value)}
+      />
+
+      <br />
+      <br />
+
+      <input
+        type="text"
         placeholder="Interests (comma separated)"
         value={interests}
         onChange={(e) => setInterests(e.target.value)}
@@ -53,7 +66,7 @@ function CreateProfile() {
       <br />
 
       <button onClick={createProfile}>
-        Go Online
+        Create Profile
       </button>
     </div>
   );

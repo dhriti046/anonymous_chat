@@ -1,33 +1,17 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import users from "../data/users.js";
 
 function DiscoverUsers() {
   const profile = JSON.parse(
     localStorage.getItem("profile")
   );
+  const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  const activeUsers = [
-    {
-      username: "AI_Master",
-      interests: ["AI", "ML", "Python"],
-    },
-    {
-      username: "DSA_King",
-      interests: ["DSA", "CP", "C++"],
-    },
-    {
-      username: "WebDev",
-      interests: ["React", "AI", "CSS"],
-    },
-    {
-      username: "GameGuy",
-      interests: ["Gaming", "Anime"],
-    },
-  ];
-
-  const filteredUsers = activeUsers.filter((user) =>
+  const filteredUsers = users.filter((user) =>
     searchQuery === ""
       ? true
       : user.interests.some((interest) =>
@@ -89,7 +73,14 @@ function DiscoverUsers() {
               Interests: {user.interests.join(", ")}
             </p>
 
-            <button>Chat</button>
+            <button onClick={() => navigate(`/chat/${user.username}`)}>
+              Chat
+            </button>
+            <button
+              onClick={() => navigate(`/profile/${user.id}`)}
+            >
+              View Profile
+            </button>
           </div>
         ))
       )}
