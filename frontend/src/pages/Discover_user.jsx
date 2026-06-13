@@ -1,42 +1,60 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import users from "../data/users.js";
+import axios from "axios";
 
 function DiscoverUsers() {
-  const profile = JSON.parse(
-    localStorage.getItem("profile")
-  );
+  
   const navigate = useNavigate();
 
   const [searchTerm, setSearchTerm] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const currentUser = JSON.parse(
+  localStorage.getItem("user") || "null"
+  );
+  const [users, setUsers] = useState([]);
 
-  const filteredUsers = users.filter((user) =>
-    searchQuery === ""
-      ? true
-      : user.interests.some((interest) =>
-          interest
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase())
-        )
+  useEffect(() => {
+    axios
+      .get("http://localhost:3001/api/users")
+      .then((res) => setUsers(res.data))
+      .catch((err) => console.log(err));
+  }, []);
+
+  useEffect(() => {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    navigate("/login");
+  }
+  }, []);
+
+  function logout() {
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    navigate("/login");
+  }
+
+  const filteredUsers = users
+  .filter(user => !currentUser || user.email !== currentUser.email)
+  .filter(user =>
+    searchQuery === "" ||
+    user.interests.some(interest =>
+      interest.toLowerCase().includes(searchQuery.toLowerCase())
+    )
   );
 
   return (
     <div>
+
       <h1>Discover Users</h1>
 
-      {profile && (
-        <div>
-          <h2>Welcome {profile.username}</h2>
-
-          <p>
-            Interests: {profile.interests.join(", ")}
-          </p>
-        </div>
+      {currentUser && (
+        <h3>Welcome {currentUser.username}</h3>
       )}
 
-      <hr />
-
+      <button onClick={logout}>
+      Logout
+      </button>
       <input
         type="text"
         placeholder="Search by interest"
@@ -77,7 +95,7 @@ function DiscoverUsers() {
               Chat
             </button>
             <button
-              onClick={() => navigate(`/profile/${user.id}`)}
+              onClick={() => navigate(`/profile/${user._id}`)}
             >
               View Profile
             </button>

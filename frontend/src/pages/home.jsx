@@ -12,6 +12,13 @@ function Home() {
       <br />
       <br />
 
+      <Link to="/login">
+        Login
+      </Link>
+
+      <br />
+      <br />
+
     </div>
   );
 }

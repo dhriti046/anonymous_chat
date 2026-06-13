@@ -1,34 +1,40 @@
 import { useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 function CreateProfile() {
   const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [bio, setBio] = useState("");
   const [interests, setInterests] = useState("");
 
   const navigate = useNavigate();
 
-  function createProfile() {
+  async function createProfile() {
     const interestArray = interests
       .split(",")
       .map((interest) => interest.trim())
       .filter((interest) => interest !== "");
 
-    if (!username.trim() || !bio.trim() || interestArray.length === 0) {
+    if (!username.trim() || !email.trim() || !password.trim() || !bio.trim() || interestArray.length === 0) {
       alert("Please fill all fields");
       return;
     }
 
-    const profile = {
-      id: Date.now(),
-      username: username.trim(),
-      bio: bio.trim(),
-      interests: interestArray,
-    };
+    try {
+      await axios.post("http://localhost:3001/api/auth/register", {
+        username: username.trim(),
+        email: email.trim(),
+        password,
+        interests: interestArray,
+      });
 
-    localStorage.setItem("profile", JSON.stringify(profile));
-
-    navigate(`/profile/${profile.id}`);
+      alert("Account created successfully");
+      navigate("/discover");
+    } catch (error) {
+      alert(error?.response?.data?.message || "Registration failed");
+    }
   }
 
   return (
@@ -40,6 +46,26 @@ function CreateProfile() {
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
+      />
+
+      <br />
+      <br />
+
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <br />
+      <br />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
       />
 
       <br />

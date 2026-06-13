@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 
 function Chat() {
   const { username } = useParams();
+  const navigate = useNavigate();
 
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
@@ -20,7 +21,14 @@ function Chat() {
 
     setInput("");
   };
+  useEffect(() => {
+    const token = localStorage.getItem("token");
 
+    if (!token) {
+      navigate("/login");
+    }
+  }, [navigate]);
+  
   return (
     <div>
       <h1>Chat with {username}</h1>
