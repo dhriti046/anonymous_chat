@@ -1,21 +1,22 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const User = require("../models/User");
+const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
-const jwt = require("jsonwebtoken");
-
 router.post("/register", async (req, res) => {
   try {
-    const { username, email, password, interests } = req.body;
+    const { username, email, password, bio, interests } = req.body;
+
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: "Username, email, and password are required" });
+    }
 
     const existingUser = await User.findOne({ email });
-
     if (existingUser) {
-      return res.status(400).json({
-        message: "User already exists",
-      });
+      return res.status(400).json({ message: "Email already in use" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -24,19 +25,27 @@ router.post("/register", async (req, res) => {
       username,
       email,
       password: hashedPassword,
-      interests,
+      bio: bio || "",
+      interests: interests || [],
     });
 
     await user.save();
 
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
+
     res.status(201).json({
-      message: "User created successfully",
+      token,
+      _id: user._id,
+      username: user.username,
+      email: user.email,
+      bio: user.bio,
+      interests: user.interests,
     });
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      message: "Server Error",
-    });
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -45,43 +54,47 @@ router.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     const user = await User.findOne({ email });
-
     if (!user) {
-      return res.status(400).json({
-        message: "User not found",
-      });
+      return res.status(400).json({ message: "No account found with that email" });
     }
 
-    const isMatch = await bcrypt.compare(
-      password,
-      user.password
-    );
-
+    const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      return res.status(400).json({
-        message: "Invalid credentials",
-      });
+      return res.status(400).json({ message: "Incorrect password" });
     }
 
-    const token = jwt.sign(
-      { userId: user._id },
-      process.env.JWT_SECRET,
-      { expiresIn: "7d" }
-    );
+    const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "7d",
+    });
 
     res.json({
       token,
       _id: user._id,
       username: user.username,
       email: user.email,
+      bio: user.bio,
       interests: user.interests,
     });
-
   } catch (err) {
-    console.log(err);
-    res.status(500).json({
-      message: "Server Error",
-    });
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.put("/update-profile", authMiddleware, async (req, res) => {
+  try {
+    const { username, bio, interests } = req.body;
+
+    const updated = await User.findByIdAndUpdate(
+      req.userId,
+      { username, bio, interests },
+      { new: true, select: "-password" }
+    );
+
+    res.json(updated);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: "Server error" });
   }
 });
 
