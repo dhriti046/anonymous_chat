@@ -1,0 +1,145 @@
+.edit-page {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.edit-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.edit-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+
+.edit-brand-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.edit-btn-back {
+  padding: 7px 16px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  font-size: 13px;
+  transition: border-color 0.15s ease;
+}
+
+.edit-btn-back:hover {
+  border-color: var(--border-hover);
+}
+
+.edit-main {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.edit-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem;
+}
+
+.edit-title {
+  font-size: 1.5rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.edit-sub {
+  color: var(--text-secondary);
+  font-size: 14px;
+  margin-bottom: 2rem;
+}
+
+.edit-field {
+  margin-bottom: 1.25rem;
+}
+
+.edit-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.edit-input {
+  padding: 11px 14px;
+  border-radius: var(--radius);
+}
+
+.edit-textarea {
+  padding: 11px 14px;
+  border-radius: var(--radius);
+  resize: vertical;
+  min-height: 90px;
+}
+
+.edit-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 5px;
+}
+
+.edit-btn-save {
+  width: 100%;
+  padding: 13px;
+  background: var(--accent);
+  color: white;
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-display);
+  transition: opacity 0.15s ease;
+}
+
+.edit-btn-save:hover {
+  opacity: 0.9;
+}
+
+.edit-btn-save:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.edit-success {
+  background: rgba(52,211,153,0.1);
+  border: 1px solid rgba(52,211,153,0.25);
+  color: #34d399;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 14px;
+  margin-bottom: 1rem;
+}
+
+.edit-error {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.25);
+  color: #f87171;
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  font-size: 14px;
+  margin-bottom: 1rem;
+}

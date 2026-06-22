@@ -1,61 +1,107 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import Avatar from "../components/Avatar";
+import "../styles/Profile.css";
 
 function Profile() {
   const { id } = useParams();
   const navigate = useNavigate();
-
   const [user, setUser] = useState(null);
-
-  const currentUser = JSON.parse(
-    localStorage.getItem("user") || "null"
-  );
+  const currentUser = JSON.parse(localStorage.getItem("user") || "null");
 
   useEffect(() => {
     fetch(`http://localhost:3001/api/users/${id}`)
-      .then((res) => res.json())
-      .then((data) => setUser(data))
-      .catch((err) => console.log(err));
+      .then((r) => r.json())
+      .then(setUser)
+      .catch(console.error);
   }, [id]);
 
-  const isMyProfile =
-    currentUser && currentUser._id === user?._id;
-
   if (!user) {
-    return <h1>Loading...</h1>;
+    return (
+      <div className="profile-page">
+        <div className="loading">Loading profile…</div>
+      </div>
+    );
   }
 
+  const isMe = currentUser?._id === user._id;
+
   return (
-    <div>
-      <h1>{user.username}</h1>
-
-      <h3>Bio</h3>
-      <p>{user.bio}</p>
-
-      <h3>Interests</h3>
-      <ul>
-        {user.interests.map((interest, index) => (
-          <li key={index}>{interest}</li>
-        ))}
-      </ul>
-
-      {isMyProfile ? (
-        <>
-          <button>
-            Edit Profile
-          </button>
-
-          <button onClick={() => navigate("/discover")}>
-            Discover Users
-          </button>
-        </>
-      ) : (
-        <button
-          onClick={() => navigate(`/chat/${user._id}`)}
-        >
-          Start Chat
+    <div className="profile-page">
+      <nav className="profile-nav">
+        <div className="profile-nav-brand" onClick={() => navigate("/discover")}>
+          <div className="profile-nav-icon">💬</div>
+          AnonChat
+        </div>
+        <button className="profile-nav-btn" onClick={() => navigate(-1)}>
+          ← Back
         </button>
-      )}
+      </nav>
+
+      <main className="profile-main">
+        <div className="profile-card">
+          <div className="profile-banner" />
+          <div className="profile-top">
+            <div className="profile-avatar-wrap">
+              <Avatar username={user.username} size={72} />
+            </div>
+            <h1 className="profile-username">{user.username}</h1>
+            {isMe && <p className="profile-email">{user.email}</p>}
+          </div>
+
+          {user.bio && (
+            <div className="profile-bio">
+              <p className="profile-section-label">Bio</p>
+              <p className="profile-bio-text">{user.bio}</p>
+            </div>
+          )}
+
+          {user.interests?.length > 0 && (
+            <div className="profile-interests">
+              <p className="profile-section-label">Interests</p>
+              <div className="profile-tags">
+                {user.interests.map((interest) => (
+                  <span key={interest} className="profile-tag">
+                    {interest}
+                  </span>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div className="profile-actions">
+            {isMe ? (
+              <>
+                <button
+                  className="profile-btn profile-btn-edit"
+                  onClick={() => navigate("/edit-profile")}
+                  onMouseOver={e => e.currentTarget.style.background = "var(--bg-hover)"}
+                  onMouseOut={e => e.currentTarget.style.background = "transparent"}
+                >
+                  ✏️ Edit profile
+                </button>
+                <button
+                  className="profile-btn profile-btn-discover"
+                  onClick={() => navigate("/discover")}
+                  onMouseOver={e => e.currentTarget.style.background = "var(--bg-hover)"}
+                  onMouseOut={e => e.currentTarget.style.background = "transparent"}
+                >
+                  Discover users
+                </button>
+              </>
+            ) : (
+              <button
+                className="profile-btn profile-btn-chat"
+                onClick={() => navigate(`/chat/${user._id}`)}
+                onMouseOver={e => e.currentTarget.style.opacity = "0.9"}
+                onMouseOut={e => e.currentTarget.style.opacity = "1"}
+              >
+                💬 Start chatting
+              </button>
+            )}
+          </div>
+        </div>
+      </main>
     </div>
   );
 }

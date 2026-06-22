@@ -1,99 +1,137 @@
 import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import "../styles/CreateProfile.css";
 
 function CreateProfile() {
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [bio, setBio] = useState("");
-  const [interests, setInterests] = useState("");
-
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: "",
+    bio: "",
+    interests: "",
+  });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  async function createProfile() {
-    const interestArray = interests
-      .split(",")
-      .map((interest) => interest.trim())
-      .filter((interest) => interest !== "");
+  const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
 
-    if (!username.trim() || !email.trim() || !password.trim() || !bio.trim() || interestArray.length === 0) {
-      alert("Please fill all fields");
+  async function handleCreate() {
+    const interestArray = form.interests
+      .split(",")
+      .map((i) => i.trim())
+      .filter(Boolean);
+
+    if (!form.username || !form.email || !form.password) {
+      setError("Username, email, and password are required.");
       return;
     }
 
+    setLoading(true);
+    setError("");
+
     try {
-      await axios.post("http://localhost:3001/api/auth/register", {
-        username: username.trim(),
-        email: email.trim(),
-        password,
+      const res = await axios.post("http://localhost:3001/api/auth/register", {
+        username: form.username.trim(),
+        email: form.email.trim(),
+        password: form.password,
+        bio: form.bio.trim(),
         interests: interestArray,
       });
 
-      alert("Account created successfully");
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify({
+        _id: res.data._id,
+        username: res.data.username,
+        email: res.data.email,
+        bio: res.data.bio,
+        interests: res.data.interests,
+      }));
       navigate("/discover");
-    } catch (error) {
-      alert(error?.response?.data?.message || "Registration failed");
+    } catch (err) {
+      setError(err?.response?.data?.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
     }
   }
 
   return (
-    <div>
-      <h1>Create Profile</h1>
+    <div className="create-profile-page">
+      <div className="create-profile-card">
+        <div className="create-profile-logo">✨</div>
+        <h1 className="create-profile-title">Create your profile</h1>
+        <p className="create-profile-sub">Start connecting with people who share your interests</p>
 
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
+        {error && <div className="create-profile-error">{error}</div>}
 
-      <br />
-      <br />
+        <div className="create-profile-grid2">
+          <div className="create-profile-field">
+            <label className="create-profile-label">Username</label>
+            <input
+              placeholder="cooluser42"
+              value={form.username}
+              onChange={set("username")}
+              className="create-profile-input"
+            />
+          </div>
+          <div className="create-profile-field">
+            <label className="create-profile-label">Email</label>
+            <input
+              type="email"
+              placeholder="you@example.com"
+              value={form.email}
+              onChange={set("email")}
+              className="create-profile-input"
+            />
+          </div>
+        </div>
 
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
+        <div className="create-profile-field">
+          <label className="create-profile-label">Password</label>
+          <input
+            type="password"
+            placeholder="••••••••"
+            value={form.password}
+            onChange={set("password")}
+            className="create-profile-input"
+          />
+        </div>
 
-      <br />
-      <br />
+        <div className="create-profile-field">
+          <label className="create-profile-label">Bio</label>
+          <textarea
+            placeholder="Tell people a bit about yourself…"
+            value={form.bio}
+            onChange={set("bio")}
+            className="create-profile-textarea"
+          />
+        </div>
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+        <div className="create-profile-field">
+          <label className="create-profile-label">Interests</label>
+          <input
+            placeholder="music, hiking, design, chess…"
+            value={form.interests}
+            onChange={set("interests")}
+            className="create-profile-input"
+          />
+          <p className="create-profile-hint">Separate interests with commas</p>
+        </div>
 
-      <br />
-      <br />
+        <button
+          onClick={handleCreate}
+          className="create-profile-btn"
+          style={{opacity: loading ? 0.7 : 1 }}
+          disabled={loading}
+        >
+          {loading ? "Creating profile…" : "Create profile →"}
+        </button>
 
-      <input
-        type="text"
-        placeholder="Bio"
-        value={bio}
-        onChange={(e) => setBio(e.target.value)}
-      />
-
-      <br />
-      <br />
-
-      <input
-        type="text"
-        placeholder="Interests (comma separated)"
-        value={interests}
-        onChange={(e) => setInterests(e.target.value)}
-      />
-
-      <br />
-      <br />
-
-      <button onClick={createProfile}>
-        Create Profile
-      </button>
+        <div className="create-profile-footer">
+          Already have an account? <Link to="/login">Sign in</Link>
+        </div>
+      </div>
     </div>
   );
 }
