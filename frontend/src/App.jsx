@@ -7,6 +7,7 @@ import DiscoverUsers from "./pages/Discover_user";
 import Profile from "./pages/profile";
 import Chat from "./pages/chat";
 
+//routing map
 function App() {
   return (
     <Routes>
@@ -25,7 +26,7 @@ function App() {
 
       <Route path="/profile/:id" element={<Profile />} />
 
-      <Route path="/chat/:username" element={<Chat />} />
+      <Route path="/chat/:id" element={<Chat />} />
     </Routes>
   );
 }

@@ -23,6 +23,7 @@ function Login() {
       localStorage.setItem(
         "user",
         JSON.stringify({
+          _id: res.data._id,
           username: res.data.username,
           email: res.data.email,
           interests: res.data.interests,

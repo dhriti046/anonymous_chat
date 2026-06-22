@@ -1,26 +1,28 @@
 import { useParams, useNavigate } from "react-router-dom";
-import users from "../data/users.js";
+import { useState, useEffect } from "react";
 
 function Profile() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const myProfile = JSON.parse(
-  localStorage.getItem("profile")
-);
+  const [user, setUser] = useState(null);
 
- const allUsers = myProfile
-    ? [...users, myProfile]
-    : users;
-
-  const user = allUsers.find(
-    (u) => u.id === Number(id)
+  const currentUser = JSON.parse(
+    localStorage.getItem("user") || "null"
   );
 
+  useEffect(() => {
+    fetch(`http://localhost:3001/api/users/${id}`)
+      .then((res) => res.json())
+      .then((data) => setUser(data))
+      .catch((err) => console.log(err));
+  }, [id]);
+
   const isMyProfile =
-    myProfile && myProfile.id === user?.id;
+    currentUser && currentUser._id === user?._id;
+
   if (!user) {
-    return <h1>User not found</h1>;
+    return <h1>Loading...</h1>;
   }
 
   return (
@@ -49,7 +51,7 @@ function Profile() {
         </>
       ) : (
         <button
-          onClick={() => navigate(`/chat/${user.username}`)}
+          onClick={() => navigate(`/chat/${user._id}`)}
         >
           Start Chat
         </button>

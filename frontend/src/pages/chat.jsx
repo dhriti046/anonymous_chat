@@ -1,26 +1,49 @@
 import { useState, useEffect } from "react";
+import { io } from "socket.io-client";
 import { useParams, useNavigate } from "react-router-dom";
 
-function Chat() {
-  const { username } = useParams();
-  const navigate = useNavigate();
+const socket = io("http://localhost:3001");
 
+function Chat() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const currentUser = JSON.parse(
+    localStorage.getItem("user")
+  );
+  console.log("Current User:", currentUser);
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
 
   const sendMessage = () => {
     if (input.trim() === "") return;
 
-    setMessages([
-      ...messages,
-      {
-        sender: "You",
-        text: input,
-      },
-    ]);
+    const messageData = {
+      sender: currentUser.username,
+      text: input,
+    };
+
+    socket.emit("send_message", messageData);
 
     setInput("");
   };
+  useEffect(() => {
+    socket.on("receive_message", (data) => {
+      setMessages((prev) => [...prev, data]);
+    });
+
+    return () => {
+      socket.off("receive_message");
+    };
+  }, []);
+
+  useEffect(() => {
+    if (currentUser?._id) {
+      console.log("Registering:", currentUser._id);
+
+      socket.emit("register", currentUser._id);
+    }
+  }, [currentUser]);
+
   useEffect(() => {
     const token = localStorage.getItem("token");
 
@@ -31,7 +54,7 @@ function Chat() {
   
   return (
     <div>
-      <h1>Chat with {username}</h1>
+      <h1>Chat</h1>
 
       <div>
         {messages.map((msg, index) => (

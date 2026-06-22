@@ -91,7 +91,7 @@ function DiscoverUsers() {
               Interests: {user.interests.join(", ")}
             </p>
 
-            <button onClick={() => navigate(`/chat/${user.username}`)}>
+            <button onClick={() => navigate(`/chat/${user._id}`)}>
               Chat
             </button>
             <button
