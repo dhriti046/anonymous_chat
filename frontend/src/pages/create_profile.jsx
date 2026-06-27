@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../styles/CreateProfile.css";
+import { API } from "../config";
 
 function CreateProfile() {
   const [form, setForm] = useState({
@@ -32,7 +33,7 @@ function CreateProfile() {
     setError("");
 
     try {
-      const res = await axios.post("http://localhost:3001/api/auth/register", {
+      const res = await axios.post(`${API}/api/auth/register`, {
         //username: form.username.trim(),
         email: form.email.trim(),
         password: form.password,

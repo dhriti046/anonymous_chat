@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Avatar from "../components/Avatar";
 import "../styles/Discover.css";
+import { API } from "../config";
 
 function Discover() {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function Discover() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:3001/api/users")
+      .get(`${API}/api/users`)
       .then((res) => setUsers(res.data))
       .catch(console.error);
   }, []);

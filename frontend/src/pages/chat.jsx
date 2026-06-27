@@ -4,7 +4,9 @@ import { io } from "socket.io-client";
 import axios from "axios";
 import Avatar from "../components/Avatar";
 import "../styles/Chat.css";
-const socket = io("http://localhost:3001");
+import { API } from "../config";
+
+const socket = io(API);
 
 function formatTime(dateStr) {
   const d = new Date(dateStr);
@@ -34,7 +36,7 @@ function Chat() {
   }, [currentUser]);
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/users/${receiverId}`)
+    fetch(`${API}/api/users/${receiverId}`)
       .then((r) => r.json())
       .then(setPeer)
       .catch(console.error);
@@ -43,7 +45,7 @@ function Chat() {
   useEffect(() => {
     if (!token) return;
     axios
-      .get(`http://localhost:3001/api/messages/${receiverId}`, {
+      .get(`${API}/api/messages/${receiverId}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((res) => setMessages(res.data))

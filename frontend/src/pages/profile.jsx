@@ -2,6 +2,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Avatar from "../components/Avatar";
 import "../styles/Profile.css";
+import { API } from "../config";
 
 function Profile() {
   const { id } = useParams();
@@ -10,7 +11,7 @@ function Profile() {
   const currentUser = JSON.parse(localStorage.getItem("user") || "null");
 
   useEffect(() => {
-    fetch(`http://localhost:3001/api/users/${id}`)
+    fetch(`${API}/api/users/${id}`)
       .then((r) => r.json())
       .then(setUser)
       .catch(console.error);
