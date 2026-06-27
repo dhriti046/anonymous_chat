@@ -6,12 +6,43 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
+const adjectives = [
+  "Silent",
+  "Blue",
+  "Crimson",
+  "Cosmic",
+  "Golden",
+  "Shadow",
+  "Swift",
+  "Mystic"
+];
+
+const animals = [
+  "Fox",
+  "Wolf",
+  "Panda",
+  "Owl",
+  "Tiger",
+  "Falcon",
+  "Raven",
+  "Lynx"
+];
+
+async function generateUsername() {
+  while (true) {
+    const username = `${adjectives[Math.floor(Math.random() * adjectives.length)]}${animals[Math.floor(Math.random() * animals.length)]}${Math.floor(1000 + Math.random() * 9000)}`;
+
+    const exists = await User.findOne({ username });
+    if (!exists) return username;
+  }
+}
+
 router.post("/register", async (req, res) => {
   try {
-    const { username, email, password, bio, interests } = req.body;
+    const { email, password, bio, interests } = req.body;
 
-    if (!username || !email || !password) {
-      return res.status(400).json({ message: "Username, email, and password are required" });
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email and password are required" });
     }
 
     const existingUser = await User.findOne({ email });
@@ -20,6 +51,7 @@ router.post("/register", async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const username = await generateUsername();
 
     const user = new User({
       username,
@@ -83,11 +115,11 @@ router.post("/login", async (req, res) => {
 
 router.put("/update-profile", authMiddleware, async (req, res) => {
   try {
-    const { username, bio, interests } = req.body;
+    const {bio, interests } = req.body;
 
     const updated = await User.findByIdAndUpdate(
       req.userId,
-      { username, bio, interests },
+      { bio, interests },
       { new: true, select: "-password" }
     );
 

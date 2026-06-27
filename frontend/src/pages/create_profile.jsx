@@ -5,7 +5,7 @@ import "../styles/CreateProfile.css";
 
 function CreateProfile() {
   const [form, setForm] = useState({
-    username: "",
+   // username: "",
     email: "",
     password: "",
     bio: "",
@@ -23,8 +23,8 @@ function CreateProfile() {
       .map((i) => i.trim())
       .filter(Boolean);
 
-    if (!form.username || !form.email || !form.password) {
-      setError("Username, email, and password are required.");
+    if (!form.email || !form.password) {
+      setError("Email and password are required.");
       return;
     }
 
@@ -33,7 +33,7 @@ function CreateProfile() {
 
     try {
       const res = await axios.post("http://localhost:3001/api/auth/register", {
-        username: form.username.trim(),
+        //username: form.username.trim(),
         email: form.email.trim(),
         password: form.password,
         bio: form.bio.trim(),
@@ -48,6 +48,7 @@ function CreateProfile() {
         bio: res.data.bio,
         interests: res.data.interests,
       }));
+      alert(`Welcome!\n\nYour anonymous username is ${res.data.username}. Use it to chat with others without revealing your identity.`);
       navigate("/discover");
     } catch (err) {
       setError(err?.response?.data?.message || "Registration failed. Please try again.");
@@ -66,15 +67,7 @@ function CreateProfile() {
         {error && <div className="create-profile-error">{error}</div>}
 
         <div className="create-profile-grid2">
-          <div className="create-profile-field">
-            <label className="create-profile-label">Username</label>
-            <input
-              placeholder="cooluser42"
-              value={form.username}
-              onChange={set("username")}
-              className="create-profile-input"
-            />
-          </div>
+          
           <div className="create-profile-field">
             <label className="create-profile-label">Email</label>
             <input

@@ -4,10 +4,10 @@ import "../styles/Home.css";
 function Home() {
   return (
     <div className="home">
-      <h1>Connect with people who share your interests</h1>
+      <h1>Anonymously connect with people who share your interests.</h1>
 
       <p>
-        Discover users, explore profiles, and start conversations.
+        Discover users, explore profiles, and start conversations without revealing your identity.
       </p>
 
       <div className="actions">
@@ -23,7 +23,7 @@ function Home() {
       <ul className="features">
         <li>🔍 Discover by interest</li>
         <li>💬 Real-time chat</li>
-        <li>👤 Rich profiles</li>
+        <li>👤 Randomly generated anonymous usernames</li>
       </ul>
     </div>
   );
