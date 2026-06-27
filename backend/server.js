@@ -13,19 +13,26 @@ const Message = require("./models/Message");
 const app = express();
 const server = http.createServer(app);
 
-app.use(cors());
+const CLIENT_URL = process.env.CLIENT_URL || "http://localhost:5173";
+
+app.use(cors({
+  origin: CLIENT_URL,
+  credentials: true,
+}));
+
+const io = new Server(server, {
+  cors: {
+    origin: CLIENT_URL,
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/messages", messageRoutes);
-
-const io = new Server(server, {
-  cors: {
-    origin: "http://localhost:5173",
-    methods: ["GET", "POST"],
-  },
-});
 
 const onlineUsers = {};
 
@@ -65,6 +72,9 @@ io.on("connection", (socket) => {
       });
     } catch (err) {
       console.error("Error saving message:", err);
+      socket.emit("message_error", {
+      message: "Message could not be sent."
+      });
     }
   });
 
@@ -80,6 +90,9 @@ io.on("connection", (socket) => {
   });
 });
 
+if (!process.env.MONGO_URI) {
+  throw new Error("MONGO_URI is not defined");
+}
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))

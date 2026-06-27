@@ -53,7 +53,7 @@ function EditProfile() {
       <nav className="edit-profile-nav">
         <div className="edit-profile-nav-brand" onClick={() => navigate("/discover")}>
           <div className="edit-profile-brand-icon">💬</div>
-          AnonChat
+          VeilTalk
         </div>
         <button className="edit-profile-btn-back" onClick={() => navigate(-1)}>← Back</button>
       </nav>

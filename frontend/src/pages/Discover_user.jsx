@@ -62,7 +62,7 @@ function Discover() {
           <div className="discover-brand-icon">
             💬
           </div>
-          AnonChat
+          VeilTalk
         </div>
 
         <div className="discover-nav-right">

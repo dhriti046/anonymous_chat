@@ -32,7 +32,7 @@ function Profile() {
       <nav className="profile-nav">
         <div className="profile-nav-brand" onClick={() => navigate("/discover")}>
           <div className="profile-nav-icon">💬</div>
-          AnonChat
+          VeilTalk
         </div>
         <button className="profile-nav-btn" onClick={() => navigate(-1)}>
           ← Back

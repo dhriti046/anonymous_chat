@@ -1,5 +1,24 @@
-# Anonymous_Chat
-A real-time anonymous chat app where you discover people by interests, explore their profiles, and have one-on-one conversations.
+# VeilTalk
+
+A real-time anonymous messaging platform where users connect based on shared interests while keeping their identity private.
+
+## Features
+
+- 🔐 Secure email & password authentication
+- 🎭 Automatically generated anonymous usernames
+- 💬 Real-time messaging with Socket.IO
+- 👤 Anonymous user profiles
+- 🎯 Interest-based user discovery
+- 🌙 Modern responsive UI
+
+## Tech Stack
+
+- React
+- Node.js
+- Express.js
+- MongoDB
+- Socket.IO
+- JWT
 
 ## First time setup (run once)
 
@@ -24,11 +43,6 @@ npm run dev
 
 This starts both backend and frontend together. Open http://localhost:5173
 
-# AnonChat
-
-A real-time anonymous chat app where you discover people by interests, explore their profiles, and have one-on-one conversations.
-
----
 
 ## Features
 
