@@ -29,7 +29,7 @@ function EditProfile() {
     try {
       const res = await axios.put(
         `${API}/api/auth/update-profile`,
-        { username: form.username.trim(), bio: form.bio.trim(), interests },
+        { bio: form.bio.trim(), interests },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
 
@@ -49,54 +49,60 @@ function EditProfile() {
   }
 
   return (
-    <div className="edit-profile-page">
-      <nav className="edit-profile-nav">
-        <div className="edit-profile-nav-brand" onClick={() => navigate("/discover")}>
-          <div className="edit-profile-brand-icon">💬</div>
+    <div className="edit-page">
+      <nav className="edit-nav">
+        <div className="edit-nav-brand" onClick={() => navigate("/discover")}>
+          <div className="edit-brand-icon">💬</div>
           VeilTalk
         </div>
-        <button className="edit-profile-btn-back" onClick={() => navigate(-1)}>← Back</button>
+        <button className="edit-btn-back" onClick={() => navigate(-1)}>← Back</button>
       </nav>
 
-      <main className="edit-profile-main">
-        <div className="edit-profile-card">
-          <h1 className="edit-profile-title">Edit profile</h1>
-          <p className="edit-profile-sub">Update your public information</p>
+      <main className="edit-main">
+        <div className="edit-card">
+          <h1 className="edit-title">Edit profile</h1>
+          <p className="edit-sub">Update your public information</p>
 
           {msg.text && (
-            <div className={msg.type === "success" ? "edit-profile-success" : "edit-profile-error"}>
+            <div className={msg.type === "success" ? "edit-success" : "edit-error"}>
               {msg.text}
             </div>
           )}
 
-          <div className="edit-profile-field">
-            <label className="edit-profile-label">Username</label>
-            <input value={form.username} onChange={set("username")} className="edit-profile-input" />
+          <div className="edit-field">
+            <label className="edit-label">Username</label>
+            <input
+              value={form.username}
+              disabled
+              className="edit-input"
+              style={{ cursor: "not-allowed", opacity: 0.6 }}
+            />
+            <p className="edit-hint">Usernames are automatically generated for anonymity and cannot be changed.</p>
           </div>
 
-          <div className="edit-profile-field">
-            <label className="edit-profile-label">Bio</label>
+          <div className="edit-field">
+            <label className="edit-label">Bio</label>
             <textarea
               value={form.bio}
               onChange={set("bio")}
-              className="edit-profile-textarea"
+              className="edit-textarea"
               placeholder="Tell people about yourself…"
             />
           </div>
 
-          <div className="edit-profile-field">
-            <label className="edit-profile-label">Interests</label>
+          <div className="edit-field">
+            <label className="edit-label">Interests</label>
             <input
               value={form.interests}
               onChange={set("interests")}
-              className="edit-profile-input"
+              className="edit-input"
               placeholder="music, hiking, chess…"
             />
-            <p className="edit-profile-hint">Separate with commas</p>
+            <p className="edit-hint">Separate with commas</p>
           </div>
 
           <button
-            className="edit-profile-btn-save"
+            className="edit-btn-save"
             onClick={handleSave}
             disabled={loading}
           >

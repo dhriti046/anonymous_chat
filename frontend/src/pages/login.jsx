@@ -38,6 +38,10 @@ function Login() {
 
   return (
     <div className="login-page">
+      {/* Background glow effects */}
+      <div className="login-glow-1" />
+      <div className="login-glow-2" />
+
       <div className="login-card">
         <div className="login-logo">💬</div>
         <h1 className="login-title">Welcome back</h1>

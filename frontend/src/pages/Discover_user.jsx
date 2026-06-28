@@ -57,6 +57,10 @@ function Discover() {
 
   return (
     <div className="discover-page">
+      {/* Background glow effects */}
+      <div className="discover-glow-1" />
+      <div className="discover-glow-2" />
+
       <nav className="discover-nav">
         <div className="discover-nav-brand">
           <div className="discover-brand-icon">

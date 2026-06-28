@@ -120,10 +120,8 @@ function Chat() {
       <div className="chat-messages">
         {messages.length === 0 ? (
           <div className="chat-empty">
-            <div style={{ fontSize: "2.5rem", opacity: 0.4 }}>💬</div>
-            <p style={{ fontSize: "14px" }}>
-              No messages yet. Say hello to {peer?.username || "them"}!
-            </p>
+            <div className="chat-empty-icon">💬</div>
+            <p>No messages yet. Say hello to {peer?.username || "them"}!</p>
           </div>
         ) : (
           messages.map((msg, i) => {
@@ -133,31 +131,19 @@ function Chat() {
             return (
               <div
                 key={msg._id || i}
-                style={{
-                  display: "flex",
-                  justifyContent: isMe ? "flex-end" : "flex-start",
-                  marginBottom: "2px",
-                }}
+                className={`chat-msg-row ${isMe ? "chat-msg-row--me" : "chat-msg-row--them"}`}
               >
-                <div className="chat-msg-row" style={{ flexDirection: isMe ? "row-reverse" : "row", maxWidth: "70%", alignSelf: isMe ? "flex-end" : "flex-start" }}>
+                <div className={`chat-msg-inner ${isMe ? "chat-msg-inner--me" : ""}`}>
                   {!isMe && (
-                    <div className="chat-msg-avatar" style={{ width: 28, flexShrink: 0 }}>
+                    <div className="chat-avatar-slot">
                       {showAvatar && <Avatar username={peer?.username} size={28} />}
                     </div>
                   )}
                   <div>
-                    <div className="chat-msg-bubble"
-                      style={{
-                        background: isMe ? "var(--accent)" : "var(--bg-card)",
-                        color: isMe ? "white" : "var(--text-primary)",
-                        border: isMe ? "none" : "1px solid var(--border)",
-                        borderBottomRightRadius: isMe ? "4px" : "18px",
-                        borderBottomLeftRadius: isMe ? "18px" : "4px",
-                      }}
-                    >
+                    <div className={`chat-bubble ${isMe ? "chat-bubble--me" : "chat-bubble--them"}`}>
                       {msg.text}
                     </div>
-                    <div className="chat-msg-time" style={{ textAlign: isMe ? "right" : "left" }}>
+                    <div className={`chat-msg-time ${isMe ? "chat-msg-time--me" : "chat-msg-time--them"}`}>
                       {msg.createdAt ? formatTime(msg.createdAt) : ""}
                     </div>
                   </div>
@@ -171,10 +157,7 @@ function Chat() {
 
       <div className="chat-input-bar">
         <div
-          className="chat-input-wrap"
-          style={{
-            borderColor: inputFocused ? "var(--accent)" : "var(--border)",
-          }}
+          className={`chat-input-wrap ${inputFocused ? "chat-input-wrap--focused" : ""}`}
         >
           <input
             className="chat-input"

@@ -7,25 +7,28 @@
 }
 
 :root {
-  --bg: #0d0d0f;
-  --bg-card: #141417;
-  --bg-input: #1a1a1f;
-  --bg-hover: #1f1f26;
-  --accent: #7c6ff7;
-  --accent-light: #a89ef9;
-  --accent-dim: rgba(124, 111, 247, 0.15);
-  --accent-glow: rgba(124, 111, 247, 0.08);
-  --text-primary: #f0eff7;
-  --text-secondary: #8c8a9e;
-  --text-muted: #514f63;
-  --border: rgba(255,255,255,0.07);
-  --border-hover: rgba(255,255,255,0.14);
+  --bg: #070709;
+  --bg-card: #0e0e12;
+  --bg-input: #15151c;
+  --bg-hover: #1b1b24;
+  --accent: #6d5dfc;
+  --accent-light: #9b8ffb;
+  --accent-dim: rgba(109, 93, 252, 0.12);
+  --accent-glow: rgba(109, 93, 252, 0.05);
+  --text-primary: #f5f5f7;
+  --text-secondary: #a1a1b5;
+  --text-muted: #5e5e75;
+  --border: rgba(255, 255, 255, 0.05);
+  --border-hover: rgba(255, 255, 255, 0.12);
   --radius: 12px;
   --radius-lg: 16px;
   --radius-xl: 24px;
   --font-display: 'Space Grotesk', sans-serif;
   --font-body: 'Inter', sans-serif;
-  --online: #34d399;
+  --online: #10b981;
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+  --accent-shadow: 0 0 20px 0 rgba(109, 93, 252, 0.2);
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 body {
@@ -36,6 +39,33 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-input);
+  border-radius: 4px;
+  border: 2px solid var(--bg);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--bg-hover);
+}
+
+/* Custom Selection */
+::selection {
+  background: var(--accent-dim);
+  color: var(--accent-light);
 }
 
 h1, h2, h3, h4 {
@@ -47,10 +77,12 @@ h1, h2, h3, h4 {
 a {
   color: var(--accent-light);
   text-decoration: none;
+  transition: var(--transition);
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--accent);
+  text-decoration: none;
 }
 
 button {
@@ -60,7 +92,7 @@ button {
   font-weight: 500;
   border: none;
   outline: none;
-  transition: all 0.15s ease;
+  transition: var(--transition);
 }
 
 input, textarea {
@@ -71,12 +103,13 @@ input, textarea {
   border-radius: var(--radius);
   color: var(--text-primary);
   outline: none;
-  transition: border-color 0.15s ease;
+  transition: var(--transition);
   width: 100%;
 }
 
 input:focus, textarea:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-dim);
 }
 
 input::placeholder, textarea::placeholder {

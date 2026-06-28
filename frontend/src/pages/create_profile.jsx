@@ -59,70 +59,73 @@ function CreateProfile() {
   }
 
   return (
-    <div className="create-profile-page">
-      <div className="create-profile-card">
-        <div className="create-profile-logo">✨</div>
-        <h1 className="create-profile-title">Create your profile</h1>
-        <p className="create-profile-sub">Start connecting with people who share your interests</p>
+    <div className="create-page">
+      {/* Background glow effects */}
+      <div className="create-glow-1" />
+      <div className="create-glow-2" />
 
-        {error && <div className="create-profile-error">{error}</div>}
+      <div className="create-card">
+        <div className="create-logo">✨</div>
+        <h1 className="create-title">Create your profile</h1>
+        <p className="create-sub">Start connecting with people who share your interests</p>
 
-        <div className="create-profile-grid2">
-          
-          <div className="create-profile-field">
-            <label className="create-profile-label">Email</label>
+        {error && <div className="create-error">{error}</div>}
+
+        <div className="create-grid2">
+          <div className="create-field">
+            <label className="create-label">Email</label>
             <input
               type="email"
               placeholder="you@example.com"
               value={form.email}
               onChange={set("email")}
-              className="create-profile-input"
+              className="create-input"
             />
           </div>
         </div>
 
-        <div className="create-profile-field">
-          <label className="create-profile-label">Password</label>
+        <div className="create-field">
+          <label className="create-label">Password</label>
           <input
             type="password"
             placeholder="••••••••"
             value={form.password}
             onChange={set("password")}
-            className="create-profile-input"
+            className="create-input"
           />
         </div>
 
-        <div className="create-profile-field">
-          <label className="create-profile-label">Bio</label>
+        <div className="create-field">
+          <label className="create-label">Bio</label>
           <textarea
             placeholder="Tell people a bit about yourself…"
             value={form.bio}
             onChange={set("bio")}
-            className="create-profile-textarea"
+            className="create-textarea"
           />
         </div>
 
-        <div className="create-profile-field">
-          <label className="create-profile-label">Interests</label>
+        <div className="create-field">
+          <label className="create-label">Interests</label>
           <input
             placeholder="music, hiking, design, chess…"
             value={form.interests}
             onChange={set("interests")}
-            className="create-profile-input"
+            className="create-input"
           />
-          <p className="create-profile-hint">Separate interests with commas</p>
+          <p className="create-hint">Separate interests with commas</p>
         </div>
 
         <button
           onClick={handleCreate}
-          className="create-profile-btn"
-          style={{opacity: loading ? 0.7 : 1 }}
+          className="create-btn"
+          style={{ opacity: loading ? 0.7 : 1 }}
           disabled={loading}
         >
           {loading ? "Creating profile…" : "Create profile →"}
         </button>
 
-        <div className="create-profile-footer">
+        <div className="create-footer">
           Already have an account? <Link to="/login">Sign in</Link>
         </div>
       </div>

@@ -20,7 +20,9 @@ function Profile() {
   if (!user) {
     return (
       <div className="profile-page">
-        <div className="loading">Loading profile…</div>
+        <div className="profile-glow-1" />
+        <div className="profile-glow-2" />
+        <div className="profile-loading">Loading profile…</div>
       </div>
     );
   }
@@ -29,12 +31,16 @@ function Profile() {
 
   return (
     <div className="profile-page">
+      {/* Background glow effects */}
+      <div className="profile-glow-1" />
+      <div className="profile-glow-2" />
+
       <nav className="profile-nav">
         <div className="profile-nav-brand" onClick={() => navigate("/discover")}>
-          <div className="profile-nav-icon">💬</div>
+          <div className="profile-brand-icon">💬</div>
           VeilTalk
         </div>
-        <button className="profile-nav-btn" onClick={() => navigate(-1)}>
+        <button className="profile-btn-back" onClick={() => navigate(-1)}>
           ← Back
         </button>
       </nav>
@@ -51,14 +57,14 @@ function Profile() {
           </div>
 
           {user.bio && (
-            <div className="profile-bio">
+            <div className="profile-section">
               <p className="profile-section-label">Bio</p>
-              <p className="profile-bio-text">{user.bio}</p>
+              <p className="profile-bio">{user.bio}</p>
             </div>
           )}
 
           {user.interests?.length > 0 && (
-            <div className="profile-interests">
+            <div className="profile-section">
               <p className="profile-section-label">Interests</p>
               <div className="profile-tags">
                 {user.interests.map((interest) => (

@@ -1,15 +1,43 @@
 .discover-page {
   min-height: 100vh;
   background: var(--bg);
+  position: relative;
+  overflow-x: hidden;
+}
+
+.discover-glow-1 {
+  position: absolute;
+  top: -10%;
+  right: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(109, 93, 252, 0.08) 0%, rgba(0,0,0,0) 70%);
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(40px);
+}
+
+.discover-glow-2 {
+  position: absolute;
+  bottom: -10%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: radial-gradient(circle, rgba(155, 143, 251, 0.05) 0%, rgba(0,0,0,0) 70%);
+  z-index: 1;
+  pointer-events: none;
+  filter: blur(40px);
 }
 
 .discover-nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
+  padding: 1rem 2.5rem;
   border-bottom: 1px solid var(--border);
-  background: var(--bg-card);
+  background: rgba(14, 14, 18, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   position: sticky;
   top: 0;
   z-index: 10;
@@ -21,7 +49,7 @@
   gap: 10px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 1.1rem;
+  font-size: 1.15rem;
 }
 
 .discover-brand-icon {
@@ -33,12 +61,13 @@
   align-items: center;
   justify-content: center;
   font-size: 16px;
+  box-shadow: var(--accent-shadow);
 }
 
 .discover-nav-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
 .discover-nav-user {
@@ -46,7 +75,8 @@
   align-items: center;
   gap: 8px;
   font-size: 14px;
-  color: var(--text-secondary);
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 .discover-btn-logout {
@@ -56,24 +86,35 @@
   border-radius: var(--radius);
   color: var(--text-secondary);
   font-size: 13px;
-  transition: border-color 0.15s ease;
+  transition: var(--transition);
 }
 
 .discover-btn-logout:hover {
   border-color: var(--border-hover);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .discover-btn-profile {
   padding: 7px 16px;
   background: var(--accent-dim);
-  border: 1px solid rgba(124,111,247,0.25);
+  border: 1px solid rgba(109, 93, 252, 0.25);
   border-radius: var(--radius);
   color: var(--accent-light);
   font-size: 13px;
   font-weight: 500;
+  transition: var(--transition);
+}
+
+.discover-btn-profile:hover {
+  background: var(--accent);
+  color: white;
+  box-shadow: var(--accent-shadow);
 }
 
 .discover-main {
+  position: relative;
+  z-index: 2;
   max-width: 900px;
   margin: 0 auto;
   padding: 2.5rem 2rem;
@@ -81,18 +122,22 @@
 
 .discover-header {
   margin-bottom: 2rem;
+  text-align: left;
 }
 
 .discover-title {
-  font-size: 2rem;
+  font-size: 2.25rem;
   font-family: var(--font-display);
   font-weight: 700;
   margin-bottom: 0.5rem;
+  background: linear-gradient(135deg, #fff 40%, var(--accent-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .discover-subtitle {
   color: var(--text-secondary);
-  font-size: 15px;
+  font-size: 14.5px;
 }
 
 .discover-search-bar {
@@ -102,67 +147,74 @@
 }
 
 .discover-search-input {
-  padding: 11px 16px;
+  padding: 12px 16px;
   border-radius: var(--radius);
   flex: 1;
 }
 
 .discover-btn-search {
-  padding: 11px 24px;
+  padding: 12px 24px;
   background: var(--accent);
   color: white;
   border-radius: var(--radius);
   font-weight: 600;
   font-size: 14px;
   white-space: nowrap;
-  transition: opacity 0.15s ease;
+  box-shadow: var(--accent-shadow);
+  transition: var(--transition);
 }
 
 .discover-btn-search:hover {
-  opacity: 0.9;
+  opacity: 0.95;
+  transform: translateY(-1px);
 }
 
 .discover-btn-clear {
-  padding: 11px 16px;
+  padding: 12px 16px;
   background: transparent;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--text-secondary);
   font-size: 14px;
-  transition: background 0.15s ease;
+  transition: var(--transition);
 }
 
 .discover-btn-clear:hover {
   background: var(--bg-hover);
+  color: var(--text-primary);
 }
 
 .discover-section-label {
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.08em;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-bottom: 1rem;
+  text-align: left;
 }
 
 .discover-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-  gap: 1rem;
+  gap: 1.25rem;
 }
 
 .discover-card {
-  background: var(--bg-card);
+  background: rgba(14, 14, 18, 0.45);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   padding: 1.5rem;
-  transition: border-color 0.15s ease, transform 0.15s ease;
-  cursor: pointer;
+  transition: var(--transition);
+  text-align: left;
 }
 
 .discover-card:hover {
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
+  border-color: rgba(109, 93, 252, 0.3);
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.6);
 }
 
 .discover-card-top {
@@ -177,12 +229,16 @@
   font-weight: 600;
   font-family: var(--font-display);
   margin-bottom: 2px;
+  color: var(--text-primary);
 }
 
 .discover-online-badge {
   font-size: 11px;
   color: var(--online);
   font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .discover-bio {
@@ -194,13 +250,15 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  min-height: 38px;
 }
 
 .discover-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  min-height: 24px;
 }
 
 .discover-tag {
@@ -210,7 +268,7 @@
   background: var(--accent-glow);
   color: var(--accent-light);
   border-radius: 100px;
-  border: 1px solid rgba(124,111,247,0.2);
+  border: 1px solid rgba(109, 93, 252, 0.2);
 }
 
 .discover-tag-more {
@@ -230,37 +288,40 @@
 }
 
 .discover-btn-chat {
-  padding: 8px;
+  padding: 9px;
   background: var(--accent);
   color: white;
   border-radius: var(--radius);
   font-size: 13px;
   font-weight: 600;
-  transition: opacity 0.15s ease;
+  box-shadow: var(--accent-shadow);
+  transition: var(--transition);
 }
 
 .discover-btn-chat:hover {
-  opacity: 0.9;
+  opacity: 0.95;
+  transform: translateY(-1px);
 }
 
 .discover-btn-view {
-  padding: 8px;
+  padding: 9px;
   background: transparent;
   border: 1px solid var(--border);
   border-radius: var(--radius);
   color: var(--text-secondary);
   font-size: 13px;
-  transition: all 0.15s ease;
+  transition: var(--transition);
 }
 
 .discover-btn-view:hover {
   background: var(--bg-hover);
   color: var(--text-primary);
+  border-color: var(--border-hover);
 }
 
 .discover-empty {
   text-align: center;
-  padding: 4rem 2rem;
+  padding: 5rem 2rem;
   color: var(--text-secondary);
 }
 
