@@ -7,25 +7,33 @@ const authMiddleware = require("../middleware/auth");
 const router = express.Router();
 
 const adjectives = [
-  "Silent",
-  "Blue",
-  "Crimson",
-  "Cosmic",
-  "Golden",
-  "Shadow",
-  "Swift",
-  "Mystic"
+  "Happy",
+  "Cozy",
+  "Sunny",
+  "Cheerful",
+  "Lucky",
+  "Gentle",
+  "Brave",
+  "Tiny",
+  "Bright",
+  "Jolly",
+  "Sweetie",
+  "Cutie"
 ];
 
 const animals = [
-  "Fox",
-  "Wolf",
   "Panda",
-  "Owl",
-  "Tiger",
-  "Falcon",
-  "Raven",
-  "Lynx"
+  "Koala",
+  "Otter",
+  "Fox",
+  "Penguin",
+  "Bear",
+  "Rabbit",
+  "Duck",
+  "Cat",
+  "Dog",
+  "Chick",
+  "Hamster"
 ];
 
 async function generateUsername() {
@@ -50,6 +58,7 @@ router.post("/register", async (req, res) => {
       return res.status(400).json({ message: "Email already in use" });
     }
 
+    //The second argument (10) is the bcrypt cost factor or salt rounds. It determines how computationally expensive the hashing process is. A higher value makes hashing slower, increasing resistance to brute-force attacks
     const hashedPassword = await bcrypt.hash(password, 10);
     const username = await generateUsername();
 
@@ -61,12 +70,15 @@ router.post("/register", async (req, res) => {
       interests: interests || [],
     });
 
+    //save user to database
     await user.save();
 
+    //create jwt token using payload {userId : user._id} and secret key from .env file and set expiry time to 7 days
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
+    //send jwt token to client along with user data
     res.status(201).json({
       token,
       _id: user._id,
@@ -90,15 +102,18 @@ router.post("/login", async (req, res) => {
       return res.status(400).json({ message: "No account found with that email" });
     }
 
+    //compare password with hashed password in database using bcrypt.compare() method
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res.status(400).json({ message: "Incorrect password" });
     }
 
+    //create jwt token
     const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
       expiresIn: "7d",
     });
 
+    //send jwt to client
     res.json({
       token,
       _id: user._id,
@@ -113,6 +128,8 @@ router.post("/login", async (req, res) => {
   }
 });
 
+//authMiddleware checks authentication, if authenticated it extracts the userId from the token and attaches it to req.userId
+//then update the user profile
 router.put("/update-profile", authMiddleware, async (req, res) => {
   try {
     const {bio, interests } = req.body;

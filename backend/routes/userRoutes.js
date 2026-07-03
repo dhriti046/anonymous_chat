@@ -4,6 +4,8 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
+//get all users from data base
+//GET /users
 router.get("/", async (req, res) => {
   try {
     const users = await User.find({}, "-password");
@@ -14,6 +16,8 @@ router.get("/", async (req, res) => {
   }
 });
 
+//get my profile using jwt token
+//GET/users/me
 router.get("/me", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.userId, "-password");
@@ -25,6 +29,8 @@ router.get("/me", authMiddleware, async (req, res) => {
   }
 });
 
+//get user by id
+//GET /users/:id
 router.get("/:id", async (req, res) => {
   try {
     const user = await User.findById(req.params.id, "-password");

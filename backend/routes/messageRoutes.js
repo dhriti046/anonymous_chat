@@ -4,6 +4,8 @@ const authMiddleware = require("../middleware/auth");
 
 const router = express.Router();
 
+//get all messages between two users
+//GET /messages/:userId
 router.get("/:userId", authMiddleware, async (req, res) => {
   try {
     const currentUser = req.userId;
